@@ -20,6 +20,7 @@ const EditUser = ({ setActiveTab, setExpand }) => {
   const [userId, setUserId] = useState(editData.uid);
   const [photo, setPhoto] = useState(editData.picUrl);
   const [label, setLabel] = useState(editData.role);
+  const [password, setPassword] = useState("");
 
   // useEffect(()=>{
   //   setName(editData.username);
@@ -52,6 +53,10 @@ const EditUser = ({ setActiveTab, setExpand }) => {
 
   const handleLabelChange = (event) => {
     setLabel(event.target.value);
+  };
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
   };
 
   const handlePhotoRemove = () => {
@@ -133,6 +138,22 @@ const EditUser = ({ setActiveTab, setExpand }) => {
               />
             </label>
             <label className="grid pr-6">
+              Password
+              <input
+                type="tel"
+                value={password}
+                className="outline-none rounded"
+                style={{
+                  height: "50px",
+                  width: "380px",
+                  backgroundColor: "#e5ecff",
+                  paddingLeft: "5px",
+                }}
+                onChange={handlePasswordChange}
+                required
+              />
+            </label>
+            <label className="grid pr-6">
               User ID
               <input
                 type="userId"
@@ -201,7 +222,7 @@ const EditUser = ({ setActiveTab, setExpand }) => {
                   name="photo"
                   accept="image/*"
                   onChange={handlePhotoChange}
-                  required
+                  // required
                   class="file:bg-black file:px-6 file:py-3 file:border-none file:rounded file:text-white file:cursor-pointer placeholder-transparent mt-3 rounded appearance-none placeholder-transparent w-[50vh]"
                   style={{ border: "2px solid #e6f7fe" }}
                 />

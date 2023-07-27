@@ -15,6 +15,7 @@ const CreateUser = ({ setActiveTab, setExpand }) => {
   const [userId, setUserId] = useState("");
   const [photo, setPhoto] = useState(null);
   const [label, setLabel] = useState("");
+  const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   // const
 
@@ -40,6 +41,10 @@ const CreateUser = ({ setActiveTab, setExpand }) => {
 
   const handleLabelChange = (event) => {
     setLabel(event.target.value);
+  };
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
   };
 
   const handlePhotoRemove = () => {
@@ -179,9 +184,25 @@ const CreateUser = ({ setActiveTab, setExpand }) => {
                   onChange={handlePhotoChange}
                   class="file:bg-black file:px-6 file:py-3 file:border-none file:rounded file:text-white file:cursor-pointer placeholder-transparent mt-3 rounded appearance-none placeholder-transparent w-[50vh]"
                   style={{ border: "2px solid #e6f7fe" }}
-                  required
+                  
                 />
               )}
+            </label>
+            <label className="grid pr-6">
+              Password
+              <input
+                type="tel"
+                value={password}
+                class="outline-none rounded"
+                style={{
+                  height: "50px",
+                  width: "380px",
+                  border: "2px solid 	#e6f7fe",
+                  paddingLeft: "5px",
+                }}
+                onChange={handlePasswordChange}
+                required
+              />
             </label>
           </div>
           <div className="flex mt-10 gap-10 items-center">

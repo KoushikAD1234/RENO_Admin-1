@@ -5,9 +5,9 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addNewShowcase } from "../../User_Management/features/userSlice";
 import { Link, useNavigate } from "react-router-dom";
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 const AddNewShowcase = ({ setExpand, setActiveTab }) => {
   // setExpand("showcaseManagement");
   setActiveTab("projectList");
@@ -17,7 +17,10 @@ const AddNewShowcase = ({ setExpand, setActiveTab }) => {
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [content1, setContent1] = useState("");
+  const [content2, setContent2] = useState("");
   const [images, setImages] = useState([]);
+  const [images1, setImages1] = useState([]);
   const [userType, setUserType] = useState("");
   const [rate, setRate] = useState("");
 
@@ -44,6 +47,15 @@ const AddNewShowcase = ({ setExpand, setActiveTab }) => {
       uploadedImages.push(files[i]);
     }
     setImages(uploadedImages);
+  };
+  
+  const handleImageUpload1 = (event) => {
+    const files = event.target.files;
+    const uploadedImages = [];
+    for (let i = 0; i < files.length; i++) {
+      uploadedImages.push(files[i]);
+    }
+    setImages1(uploadedImages);
   };
 
   const handleUserTypeChange = (event) => {
@@ -148,7 +160,7 @@ const AddNewShowcase = ({ setExpand, setActiveTab }) => {
               </div>
             </label>
 
-          {/* <div> */}
+            {/* <div> */}
             <label className="grid mt-5" style={{ fontSize: "15px" }}>
               Upload Photos
               <input
@@ -160,16 +172,16 @@ const AddNewShowcase = ({ setExpand, setActiveTab }) => {
                 multiple
                 onChange={handleImageUpload}
                 required
-                />
+              />
             </label>
-            <label style={{marginTop:"7.5vh", marginLeft:"4vh"}}>
+            <label style={{ marginTop: "7.5vh", marginLeft: "4vh" }}>
               <FormControlLabel
-                control={<Checkbox  />}
+                control={<Checkbox />}
                 label="Featured Status"
-                />
+              />
             </label>
-          {/* </div> */}
-                </div>
+            {/* </div> */}
+          </div>
           <div style={{ width: "600px", marginTop: "10px" }}>
             {images && images.length > 0 && (
               <div className="grid grid-cols-6 gap-2">
@@ -223,6 +235,90 @@ const AddNewShowcase = ({ setExpand, setActiveTab }) => {
             />
           </label>
           {/* <div> */}
+          <label className="grid mt-5" style={{ fontSize: "15px" }}>
+            Upload Photos for Quotation
+            <input
+              className="w-[50vh] file:bg-black file:px-6 file:py-3 file:border-none file:rounded file:text-white file:cursor-pointer placeholder-transparent mt-3 rounded appearance-none placeholder-transparent"
+              style={{ border: "2px solid #e6f7fe" }}
+              type="file"
+              placeholder=""
+              accept="image/*"
+              multiple
+              onChange={handleImageUpload1}
+              required
+            />
+          </label>
+          <div style={{ width: "600px", marginTop: "10px" }}>
+            {images1 && images1.length > 0 && (
+              <div className="grid grid-cols-6 gap-2">
+                {images1.map((image, index) => (
+                  <img
+                    key={index}
+                    src={URL.createObjectURL(image)} // replace with your image source
+                    alt={image.name} // replace with your image alt text
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      objectFit: "cover",
+                      marginRight: "10px",
+                    }} // set width, height, object-fit, and margin-right styles
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+          <div style={{ fontSize: "10px", marginTop: "8px" }}>
+            <ul className="list-disc ml-3 text-gray-500">
+              <li>Allowed banner image extension .jpg | .jpeg | .png</li>
+              <li>
+                Max banner image file size <a className="text-red-500">5MB</a>
+              </li>
+              <li>
+                Recommended Banner image size{" "}
+                <a className="text-red-500">1900px * 700px</a>
+              </li>
+            </ul>
+          </div>
+          <label className="grid mt-5">
+            Project Quotation Details 1
+            <textarea
+              id="content"
+              placeholder="Enter Quotation Details 1"
+              className="rounded outline-none w-[100vh] pt-2"
+              style={{
+                height: "170px",
+                // width: "1210px",
+                border: "2px solid #e6f7fe",
+                paddingLeft: "10px",
+                paddingTop: "20px",
+                fontSize: "15px",
+                marginTop: "5px",
+              }}
+              value={content1}
+              onChange={(event) => setContent1(event.target.value)}
+              required
+            />
+          </label>
+          <label className="grid mt-5">
+            Project Quotation Details 2
+            <textarea
+              id="content"
+              placeholder="Enter Quotation Details 2"
+              className="rounded outline-none w-[100vh] pt-2"
+              style={{
+                height: "170px",
+                // width: "1210px",
+                border: "2px solid #e6f7fe",
+                paddingLeft: "10px",
+                paddingTop: "20px",
+                fontSize: "15px",
+                marginTop: "5px",
+              }}
+              value={content2}
+              onChange={(event) => setContent2(event.target.value)}
+              required
+            />
+          </label>
           <button
             className="rounded mt-10 bg-lime-600 hover:bg-lime-700 "
             style={{

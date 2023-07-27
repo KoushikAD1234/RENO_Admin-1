@@ -115,17 +115,25 @@ const AllProjects = ({ setActiveTab, setExpand }) => {
       accessor: "category",
     },
     {
-      header: "Expiry Date",
+      header: "Start Date",
       accessor: "expirydate",
     },
     {
-      header: "Offer By",
-      accessor: "offerby",
+      header: "End Date",
+      accessor: "expirydate",
     },
-    {
-      header: "Offer Value",
-      accessor: "offervalue",
-    },
+    // {
+    //   header: "Expiry Date",
+    //   accessor: "expirydate",
+    // },
+    // {
+    //   header: "Offer By",
+    //   accessor: "offerby",
+    // },
+    // {
+    //   header: "Offer Value",
+    //   accessor: "offervalue",
+    // },
     {
       header: "Action",
       accessor: "action",
