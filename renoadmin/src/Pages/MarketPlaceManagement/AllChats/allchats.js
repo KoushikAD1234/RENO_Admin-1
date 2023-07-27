@@ -2,16 +2,17 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { Grid } from "react-loader-spinner";
 import Table from "../../../UI/CommonTable/Table";
-import { deleteIcon, images } from "../Assets/index";
 import TopHeader from "../../../UI/TopHeader/TopHeader";
 import Status from "./Status";
 import { useDispatch, useSelector } from "react-redux";
+import { deleteIcon, images, view } from "../Assets/index";
 import {
   DeleteDeal,
   MPM_allchats,
 } from "../../User_Management/features/userSlice";
 import { Alert, AlertTitle, Button } from "@mui/material";
 import cookie from "js-cookie";
+import Chatdetails from "../../HSM/HelpDesk/chatdetails";
 
 const Action = ({ dealId, dealName }) => {
   const dispatch = useDispatch();
@@ -19,7 +20,20 @@ const Action = ({ dealId, dealName }) => {
   const handleDeleteClick = () => {
     setShowDeleteConfirmation(true);
   };
-
+  const productCategory = [
+    "Electrical",
+    "Plumbing",
+    "Air con service",
+    "Handyman Services",
+    "Carpentry Services",
+    "Tiling Works",
+    "Ceiling and Partition work",
+    "Painting Works",
+    "Aluminium and metal work",
+    "Vinyl Flooring",
+    "Glass Works",
+    "Dismantling and Disposal",
+  ];
   const handleConfirmDelete = () => {
     dispatch(DeleteDeal(dealId))
       .then(() => {
@@ -34,15 +48,40 @@ const Action = ({ dealId, dealName }) => {
     setShowDeleteConfirmation(false);
   };
 
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+
+  const handleClick = () => {
+    setIsPopupVisible(true);
+  };
+
+  const handleClosePopup = () => {
+    setIsPopupVisible(false);
+  };
+  const PopupComponent = ({ onClose, name, status, tid }) => {
+    return (
+      <Chatdetails onClose={onClose} page='allChats' name={name} status={status} tid={tid} />
+    );
+  };
+
   const roles = cookie.get("role");
   return (
     <div className="w-6 h-6 flex gap-3 cursor-pointer">
       {roles === "admin" || roles === "editor" ? (
         <>
           <img src={deleteIcon} onClick={handleDeleteClick} alt="Delete" />
+          <img onClick={handleClick} className="cursor-pointer" src={view} alt="View" />
+
         </>
       ) : (
         "Not Accessible"
+      )}
+      {isPopupVisible && (
+        <PopupComponent
+          onClose={handleClosePopup}
+          name='Alex'
+          status='Pending'
+          tid='2'
+        />
       )}
       {showDeleteConfirmation && (
         <div className="fixed top-0 left-0 w-screen h-screen bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
@@ -76,10 +115,8 @@ const Photo = ({ picUrl }) => {
   );
 };
 
-const AllChats = ({ setActiveTab, setExpand }) => {
+const AllChats = () => {
   const head = "All Chats and Deals";
-  setExpand("marketPlace");
-  setActiveTab("chatsAndDeals");
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
 
@@ -104,10 +141,6 @@ const AllChats = ({ setActiveTab, setExpand }) => {
       accessor: "requester",
     },
     {
-      header: "Subject",
-      accessor: "subject",
-    },
-    {
       header: "Message",
       accessor: "message",
     },
@@ -125,7 +158,6 @@ const AllChats = ({ setActiveTab, setExpand }) => {
   const data = chatData.map((user) => ({
     photo: <Photo picUrl={user.fields.pic_url} />,
     requester: user.fields.requester,
-    subject: user.fields.subject,
     message: user.fields.msg,
     status: <Status value={user.fields.status} />,
     action: <Action dealName={user.fields.requester} dealId={user.pk} />,
@@ -133,38 +165,32 @@ const AllChats = ({ setActiveTab, setExpand }) => {
 
   // Number of Pages to be display on a single page.
   const pageSize = 4;
-
+  const productCategory = [
+    "Electrical",
+    "Plumbing",
+    "Air con service",
+    "Handyman Services",
+    "Carpentry Services",
+    "Tiling Works",
+    "Ceiling and Partition work",
+    "Painting Works",
+    "Aluminium and metal work",
+    "Vinyl Flooring",
+    "Glass Works",
+    "Dismantling and Disposal",
+  ];
   return (
-    <div>
-      <div className="flex fixed z-10">
-        <TopHeader className="fixed" head={head} />
-      </div>
-      {loading ? (
-        <div className="fixed inset-0 bg-gray-700 opacity-80 flex justify-center items-center z-50">
-          <Grid
-            height="80"
-            width="80"
-            color="#4fa94d"
-            ariaLabel="grid-loading"
-            radius="12.5"
-            wrapperStyle={{}}
-            wrapperClass=""
-            visible={true}
-          />
-        </div>
-      ) : null}
-      <div className="  ml-72 mt-28 w-[75vw] relative">
-        {chatData.length > 0 ? (
-          <Table columns={columns} data={data} pageSize={pageSize} />
-        ) : (
-          <>
-            <Table columns={columns} data={data} pageSize={pageSize} />
-            <div className="flex ml-5 justify-center w-full mt-40">
-              <h2 className="text-4xl font-bold text-gray-500">No Data!</h2>
-            </div>
-          </>
-        )}
-      </div>
+    <div className="  ml-72 mt-10 w-[75vw] relative">
+      {chatData.length > 0 ? (
+        <Table columns={columns} data={data} pageSize={pageSize} catgoryFilter={productCategory} />
+      ) : (
+        <>
+          <Table columns={columns} data={data} pageSize={pageSize} catgoryFilter={productCategory} />
+          <div className="flex ml-5 justify-center w-full mt-40">
+            <h2 className="text-4xl font-bold text-gray-500">No Data!</h2>
+          </div>
+        </>
+      )}
     </div>
   );
 };
